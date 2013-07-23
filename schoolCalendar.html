@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+     <!--faces-->
+    
+    <link rel="stylesheet" type="text/css" href="css/gridDefault.css" />
+    <link rel="stylesheet" type="text/css" href="css/gridComponent.css" />
+    <script src="js/modernizr.custom.js"></script>
+    <script src="js/jquery1.10.1.min.js"></script>
+    
+    <link rel="stylesheet" href="http://host.coxmediagroup.com/ajc/digitalprojects/global/css/iFrame_Medley.css" type="text/css"/>
+
+    <!--<script src="http://code.jquery.com/jquery-1.9.1.min.js" type="text/javascript"></script>-->
+    <script src="http://alt.coxnewsweb.com/ajc/_newsapps/libraries/utility/tabletop/tabletop.js" type="text/javascript"></script>
+    
+    <!--<script type="text/javascript" src="js/bootstrap.js"></script>-->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.css" />
+    <!--<link rel="stylesheet" href="css/animate.css" />-->
+    
+<style type="text/css">
+	
+	img {
+		border:none;
+		padding:0;
+		margin:0;
+				vertical-align:middle;
+	}
+	a img {
+		border:none;
+		padding:0;
+		margin:0;
+	}
+	a:hover {
+		text-decoration:none;
+	}
+	a strong{
+		color: #000098;	
+	}
+	.dates{
+		margin-left:31px;
+	}
+	#boxContainer{
+		-webkit-box-shadow: 6px 6px 3px 2px rgba(0, 0, 0, .5);
+		box-shadow: 6px 6px 3px 2px rgba(0, 0, 0, .5);
+		-moz-box-shadow: 6px 6px 3px 2px rgba(0, 0, 0, .5);
+		border: 1px solid #ccc; 
+		-moz-border-radius: 0px; 
+		border-radius: 0px;
+		z-index:100;
+		display:none;
+		width:500px; 
+		height:350px; 
+		background-color:#fff;
+		overflow:hidden;
+		position:absolute; 
+		top:70px; 
+		/*left:50px;*/
+		padding-top:20px;
+		background-image: url(images/notecard.jpg);
+	}
+        .center{
+            width:500px;
+            margin:auto;
+            position:relative;
+        }
+	.slideDiv {
+		width:550px;
+		height:420px;
+		display:inline;
+		border:none;
+		position:absolute;
+		list-style-type:none;
+		padding: 15px 0px 15px 10px;
+		margin:0;
+	}
+	.names {
+		font-size:24px;
+		padding-left:30px;
+		margin-top:15px;
+	}
+	.images {
+		float:left;
+		display:inline;
+		padding:5px;
+		padding-left:30px;
+                width:200px;
+		display:none;
+	}
+	.information {
+		float: left;
+		display: inline;
+		height: 250px;
+		width: 450px;
+		padding-top: 0px;
+		padding-right: 15px;
+		margin-left: 22px;
+		padding-left: 10px;
+		margin-top: -4px;
+	}
+	.bigImg{
+		-moz-box-shadow: 0 0 5px #888;
+		-webkit-box-shadow: 0 0 5px#888;
+		box-shadow: 0 0 5px #888;
+	}
+	#leftHov, #rightHov{
+		position:absolute; top:0px; z-index:100;display:none;
+	}
+	#leftHov{
+		left:3px;
+		top:150px;
+		
+	}
+	#rightHov{
+		right:3px;
+		top:150px;
+	}
+	#hiddenLayer{
+		z-index:1; position:absolute; top:0px; left:0px; width:100%;height:100%;display:none;
+	}
+	#portraitList{
+		height:350px;position:absolute;top:0;left:0;margin:0;padding:0;
+	}
+</style> 
+    
+
+    <title>Image Grid</title>
+
+<script type="text/javascript">
+    
+        var gridID;
+	var name;
+	var slideID;
+	var imgSrc;
+	var lilImg;
+	var bigImg;
+        var num;
+	var logo;
+	var sponsorURL;
+    
+var public_spreadsheet_url;
+var url = window.location.toString();
+var query_string = url.split("?");
+window.onload = function() { 
+	public_spreadsheet_url = query_string[2]; 
+	init()
+        //var d = new Date();
+        //var n = d.getDate();
+        var randomNumber = Math.floor(Math.random() * 30);
+        var randomLoad = randomNumber*cardWidth;
+	var firstSlide = 0;
+                //$('#boxContainer').show();
+		$('#boxContainer').hide();
+                $('#portraitList').css({'left':'0'});
+                //$('#portraitList').animate({'left':'-='+randomLoad},'100');
+		$('#portraitList').animate({'left':'-='+firstSlide},'100');
+                //$('#hiddenLayer').show();
+		$('#hiddenLayer').hide();
+        //switch show and hide to add and remove card on load
+};
+
+function init() {
+    Tabletop.init( { key: public_spreadsheet_url,
+                     callback: parsePeeps,
+                     simpleSheet: true } )
+}
+
+/*function showInfo(data, tabletop) {
+	parsePeeps(data);
+  }*/
+var cardWidth= 500;
+
+function parsePeeps(gdata){
+    console.log("parsing");
+        
+	//var d = new Date();
+        //var n = d.getDate();
+        //var beforeDate;
+        //for (i=0;i<n;i){
+	$.each(gdata, function (i, gdata){
+            
+                var spot = i*cardWidth;
+                
+            
+		gridID = "img"+i;
+		name = gdata.bigtext;
+		narrative = gdata.content;
+		if(gdata.smalltext !== undefined){
+			smalltext = gdata.smalltext;
+		}
+		else{
+			smalltext = "";
+		}
+		slideID = gridID + "div";
+		imgSrc = gdata.imageurl;
+		
+                
+		//goes inside what appends to grid    
+		lilImg = '<a><img src="' + imgSrc + '" width="130px" height="130px"/><div class="date"><h3>'+(i+1)+'</h3></div><div class="block" ><h3>' + (i+1) + '</h3></div></a>';
+                
+		//listItem = '#' + gridID;
+		bigImg = '<img src="' + imgSrc + '" width="260px" height="260px"/>';
+		//var spot = i*cardWidth;
+                
+           
+	    //appends the images to resp grid		
+		//$('<li id=' +liGridID+ '><div id="' + gridID + '">' + lilImg + '</div></li>').appendTo('.cbp-rfgrid');
+                $('<li><div id="' + gridID + '">' + lilImg + '</div></li>').appendTo('.cbp-rfgrid');
+                
+                	//fill lightbox with info	
+		var divStuff = '<div id="name'+gridID+'"><span class="names"><strong>'+name+'</strong></span><div class="dates">'+smalltext+'</div></div><div style="width:'+cardWidth+'px;height:280px;display:block;padding-top:15px;"><div class="images" id="img'+gridID+'">'+bigImg+'</div><div class="information" id="info'+gridID+'"><span class="text"><p>'+narrative+'</p></span></div><div class="stamp">' + (i+1) + '</div></div>';
+		document.getElementById("portraitList").innerHTML += '<li id="'+slideID+'" class="slideDiv">'+divStuff+'</li>';	
+		$('#'+slideID).css({'left': spot});
+                
+		
+		//make image grid click to open lightbox
+		$('#'+gridID).click(function(event){
+			$('#boxContainer').show();
+			$('#portraitList').css({'left':'0'});
+			$('#portraitList').animate({'left':'-='+spot},'100');
+			$('#hiddenLayer').show();
+		});		
+		//close lightbox
+		$('#closeBtn').click(function(event){
+			$('#portraitList').css({'left':'0'});
+			$('#boxContainer').hide();
+			$('#hiddenLayer').hide();
+		});
+		$('#hiddenLayer').click(function(event){
+			$('#portraitList').css({'left':'0'});
+			$('#boxContainer').hide();
+			$('#hiddenLayer').hide();
+		});
+
+		
+            
+	});//$.each()
+        //};
+
+	slideWidth = $(".slideDiv").length*cardWidth;	
+        //slideWidth = n*cardWidth;	
+	
+        
+	$('#boxContainer').mouseover(function(){
+		$('#leftHov').show();
+		$('#rightHov').show();
+	});
+	$('#boxContainer').mouseout(function(){
+		$('#rightHov').hide(); 
+		$('#leftHov').hide();
+	});	
+        
+	//positioning within lightbox		
+	var portraits = $('#portraitList');
+
+	$("#leftHov").bind("click", function() {
+		if(portraits.position().left < 0){
+    		portraits.animate({"left":"+="+cardWidth}, {
+        		speed: "fast"     
+    		});
+		}	
+	});
+	$("#rightHov").bind("click", function() {
+		if(portraits.position().left > -1*(slideWidth-cardWidth)){
+    		portraits.animate({"left":"-="+cardWidth}, {
+        		speed: "fast"
+    		});
+		}
+
+	});
+        
+        
+
+	
+};//parsePeeps
+</script>
+</head> 
+<body>
+	<div class="august">August</div>
+    
+<div id="hiddenLayer" style="z-index:1; position:absolute; top:0px; left:0px; width:100%;height:1500px;display:none;">
+</div>       
+                <ul class="cbp-rfgrid">	
+			<!--This is where the images get rendered -->
+                </ul>
+
+                <div class="center">
+			<div id="boxContainer">
+		<div id="leftHov"><a href="#"><img src="images/arrowLeft.png" width="30px"/></a></div>
+		<div id="rightHov"><a href="#"><img src="images/arrowRight.png" width="30px"/></a></div>	
+		<ul id="portraitList"></ul>	
+		<div id="closeBtn">
+			<a href="#" >x</a>
+		</div>
+                </div>
+	</div>
+		
+</body>
+</html>
