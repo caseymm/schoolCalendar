@@ -58,6 +58,11 @@
     align-items: center;
     text-align: center;
     opacity: 0;
+    border-style: solid;
+	border-color: #6B6B6B;
+	border-width:2px;
+	border-bottom-style: none;
+	border-right-style: none;
 }
 
 .cbp-rfgrid li a .date {
