@@ -5,7 +5,14 @@
 
 .surround{
     width: 100%;
-    padding-right:7px;
+    /*padding-right:7px;*/
+    height:1500px;
+}
+
+@media screen and (max-width: 350px){
+    .surround{
+        max-width:320px;
+    }
 }
 
 .border{
@@ -116,6 +123,7 @@
     margin-top:-253px;
     width:200px;
     height:300px;
+    font-size:13px;
 }
 
 .august{
